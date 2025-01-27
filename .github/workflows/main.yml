@@ -3,6 +3,7 @@ name: Run Script at 9 AM and 6 PM on Weekends
 on:
   schedule:
     - cron: '0 9,19 * * 1-5'  # Runs at 9 AM and 6 PM on Saturday and Sunday
+     workflow_dispatch:  # Allows manual trigger
 
 jobs:
   run-script:
