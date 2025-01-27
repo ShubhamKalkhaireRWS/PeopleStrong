@@ -1,60 +1,55 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
+const { Builder, By, Key, until } = require('selenium-webdriver');
 
 // Sleep function to pause for a specified time
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-
 (async () => {
-      const browser = await puppeteer.launch({
-        headless: false, // Change to true if you want a headless browser
-        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Add these flags
-    });
-    const page = await browser.newPage();
+    // Initialize the WebDriver
+    const driver = await new Builder().forBrowser('chrome').build();
+    await driver.manage().window().maximize();
 
-    await page.goto('https://kp.peoplestrong.com/altIDPLogin.jsf', { waitUntil: 'domcontentloaded' });
+    try {
+        // Navigate to the login page
+        await driver.get('https://kp.peoplestrong.com/altIDPLogin.jsf');
 
-    const desiredUrl = 'https://fam.kp.org/idp/0VACVi3jSu/resumeSAML20/idp/SSO.ping'; // Replace with your desired URL
-    
-    await page.waitForFunction(
-        () => /https:\/\/fam\.kp\.org\/idp\/[a-zA-Z0-9]+\/resumeSAML20\/idp\/SSO\.ping/.test(window.location.href),
-        { timeout: 60000 } // Adjust timeout as needed
-    );
-    await sleep(5000)
+        // Wait for the desired URL to match
+        await driver.wait(until.urlMatches(/https:\/\/fam\.kp\.org\/idp\/[a-zA-Z0-9]+\/resumeSAML20\/idp\/SSO\.ping/), 60000);
+        console.log('Navigated to desired URL');
 
+        // Wait for the username field to be present and type the username
+        const usernameField = await driver.findElement(By.tagName('input')); // Assuming the first input is for the username
+        await usernameField.sendKeys('A901180');
 
-    // Type the username in the focused text box
-    await page.keyboard.type('A901180');
+        await sleep(1000);
 
-    await sleep(1000)
-    // Press TAB to move to the password field
-    await page.keyboard.press('Tab');
-    await sleep(1000)
-    // Type the password in the password text box
-    await page.keyboard.type('Shubham@1234');
-    await sleep(1000)
-    // Press TAB again to move to the sign-in button
-    await page.keyboard.press('Tab');
+        // Press TAB and wait for the password field, then type the password
+        await usernameField.sendKeys(Key.TAB);
+        await sleep(1000);
+        const passwordField = await driver.switchTo().activeElement();
+        await passwordField.sendKeys('Shubham@1234');
 
-    // Press Enter to submit the form (login)
-    await page.keyboard.press('Enter');
+        await sleep(1000);
 
-    // Optionally wait for a navigation to complete (if necessary)
-    await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
+        // Press TAB again to move to the sign-in button and press ENTER
+        await passwordField.sendKeys(Key.TAB);
+        await sleep(1000);
+        const signInButton = await driver.switchTo().activeElement();
+        await signInButton.sendKeys(Key.ENTER);
 
-    console.log('Login attempted');
+        // Optionally wait for navigation to complete
+        await driver.wait(until.urlIs('https://kp.peoplestrong.com/oneweb/#/home'), 120000);
+        console.log('Logged in successfully');
 
-    await page.waitForFunction(
-        () => window.location.href === 'https://kp.peoplestrong.com/oneweb/#/home',
-        { timeout: 60000 } // Adjust timeout as needed
-    );
-    console.log("Logged in successfully");
-    
-    await sleep(10000)
-    await page.mouse.click(678, 261, { button: 'left' });
-    await sleep(5000)
-    // Close the browser
-    await browser.close();
- 
-
+        // Wait for the page to load and perform actions (click on specific coordinates if needed)
+        await sleep(10000);
+        await driver.actions().move({ x: 1000, y: 188 }).click().perform();
+        await sleep(1000);
+        await driver.actions().move({ x: 799, y: 188 }).click().perform();
+        await sleep(5000);
+    } catch (error) {
+        console.error('An error occurred:', error);
+    } finally {
+        // Close the browser
+        await driver.quit();
+    }
 })();
