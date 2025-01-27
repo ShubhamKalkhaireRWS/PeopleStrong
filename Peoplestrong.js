@@ -5,11 +5,9 @@ const path = require('path');
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 (async () => {
-    const uniqueUserDataDir = path.join(__dirname, 'user_data', `session_${Date.now()}`);
-  const options = new (require('selenium-webdriver/chrome').Options)();
-  options.addArguments(`--user-data-dir=${uniqueUserDataDir}`);
-    // Initialize the WebDriver
-      let driver = await new Builder()
+ let options = new chrome.Options();
+  // Avoid adding '--user-data-dir' unless required
+  let driver = await new Builder()
     .forBrowser('chrome')
     .setChromeOptions(options)
     .build();
