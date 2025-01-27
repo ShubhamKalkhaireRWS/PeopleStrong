@@ -6,7 +6,10 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 (async () => {
-    const browser = await puppeteer.launch({ headless: false });
+      const browser = await puppeteer.launch({
+        headless: false, // Change to true if you want a headless browser
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Add these flags
+    });
     const page = await browser.newPage();
 
     await page.goto('https://kp.peoplestrong.com/altIDPLogin.jsf', { waitUntil: 'domcontentloaded' });
