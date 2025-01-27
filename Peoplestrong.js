@@ -4,6 +4,9 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 (async () => {
+    const uniqueUserDataDir = path.join(__dirname, 'user_data', `session_${Date.now()}`);
+  const options = new (require('selenium-webdriver/chrome').Options)();
+  options.addArguments(`--user-data-dir=${uniqueUserDataDir}`);
     // Initialize the WebDriver
     const driver = await new Builder().forBrowser('chrome').build();
     await driver.manage().window().maximize();
