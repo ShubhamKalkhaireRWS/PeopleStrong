@@ -1,23 +1,23 @@
-name: Run Script at 9 AM and 6 PM on Weekends
+# name: Run Script at 9 AM and 6 PM on Weekends
 
-on:
-  schedule:
-      - cron: '*/4 * * * *'  # Runs every 5 minutes
-jobs:
-  run-script:
-    runs-on: ubuntu-latest
+# on:
+#   schedule:
+#       - cron: '*/4 * * * *'  # Runs every 5 minutes
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
     
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
       
-      - name: Set up Node.js (if you're using Node.js)
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+#       - name: Set up Node.js (if you're using Node.js)
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '16'
 
-      - name: Install dependencies (if necessary)
-        run: npm install
+#       - name: Install dependencies (if necessary)
+#         run: npm install
 
-      - name: Run Puppeteer Script
-        run: node Peoplestrong.js
+#       - name: Run Puppeteer Script
+#         run: node Peoplestrong.js
