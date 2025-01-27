@@ -8,7 +8,10 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const options = new (require('selenium-webdriver/chrome').Options)();
   options.addArguments(`--user-data-dir=${uniqueUserDataDir}`);
     // Initialize the WebDriver
-    const driver = await new Builder().forBrowser('chrome').build();
+      let driver = await new Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(options)
+    .build();
     await driver.manage().window().maximize();
 
     try {
