@@ -6,11 +6,9 @@ const chrome = require('selenium-webdriver/chrome');
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 (async () => {
- let options = new chrome.Options();
   // Avoid adding '--user-data-dir' unless required
   let driver = await new Builder()
     .forBrowser('chrome')
-    .setChromeOptions(options)
     .build();
     await driver.manage().window().maximize();
 
