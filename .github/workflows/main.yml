@@ -23,39 +23,39 @@
 #         run: node Peoplestrong.js
 
 
-name: scrape
+# name: scrape
 
-on:
-  schedule:
-      - cron: '*/4 * * * *'  # Runs every 5 minutes
+# on:
+#   schedule:
+#       - cron: '*/4 * * * *'  # Runs every 5 minutes
 
-jobs:
-  scrape:
-    runs-on: ubuntu-latest
+# jobs:
+#   scrape:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out this repo
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Check out this repo
+#         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
 
-      - name: Installed package list
-        run: apt list --installed
+#       - name: Installed package list
+#         run: apt list --installed
 
-      - name: Remove Chrome
-        run: sudo apt purge google-chrome-stable
+#       - name: Remove Chrome
+#         run: sudo apt purge google-chrome-stable
 
-      - name: Remove default Chromium
-        run: sudo apt purge chromium-browser
+#       - name: Remove default Chromium
+#         run: sudo apt purge chromium-browser
 
-      - name: Install a new Chromium
-        run: sudo apt install -y chromium-browser
+#       - name: Install a new Chromium
+#         run: sudo apt install -y chromium-browser
 
-      - name: Install all necessary packages
-        run: npm install puppeteer axios cheerio
+#       - name: Install all necessary packages
+#         run: npm install puppeteer axios cheerio
 
-      - name: Run the scraping script
-        run: node Peoplestrong.js
+#       - name: Run the scraping script
+#         run: node Peoplestrong.js
